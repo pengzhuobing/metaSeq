@@ -1999,8 +1999,9 @@ sub getBID{
 
 sub getIDs{
   my $i = shift;
-  my $cid = ($i =~ /^(.*BI\d+)_k\d+_(\d+)_.*C([0-9]+|-)_/)?"$1\.$2\.$3":$i;
-  my $bid = ($i =~ /^(.*BI\d+)_k\d+_(\d+)_.*C([0-9]+|-)_/)?"$1":$i;
+  my @t = split /\t/,$i;
+  my $cid = ($t[0] =~ /^(.*BI\d+)_k\d+_(\d+)_.*C([0-9]+|-)_/)?"$1\.$2\.$3":$t[0];
+  my $bid = ($t[0] =~ /^(.*BI\d+)_k\d+_(\d+)_.*C([0-9]+|-)_/)?"$1":$t[0];
   return($cid,$bid);
 }
 
@@ -2498,7 +2499,7 @@ sub run_tree2fa{
           }
         }
       }
-    }elsif( (not defined $cfg) && $s[2] =~ /$rank|$clade/){
+    }elsif( (not defined $cfg) && $s[2] =~ /^($rank|$clade)$/){
       unless(@alt > 0 ){
         $PICK{$s[3]}{type} = "clade";
         $PICK{$s[3]}{rankID} = $s[1];
@@ -2656,9 +2657,9 @@ sub run_tree2fa{
   close OUT;
   &verbose("done\n  Written ".($COUNT{valid}||0)." clade seqs. ".($COUNT{MISS}||0)." records cannot found seqs.\n");
   &verbose("  SSU: ".($COUNT{SSU}||0)." (".($COUNT{annSSU}||0)."+".($COUNT{cldSSU}||0)."+".($COUNT{supSSU}||0));
-  &verbose(" | LSU: ".($COUNT{LSU}||0)."(".($COUNT{annLSU}||0)."+".($COUNT{cldLSU}||0));
-  &verbose("+".($COUNT{supLSU}||0)." | BOTH:".($COUNT{ALL}||0)."(".($COUNT{annALL}||0)."+".($COUNT{cldALL}||0)."+".($COUNT{supALL}||0).")\n");
-  &verbose("    * Each unit: <total number>(<from rank> + <from clade> + <from linkage clade>\n");
+  &verbose(") | LSU: ".($COUNT{LSU}||0)."(".($COUNT{annLSU}||0)."+".($COUNT{cldLSU}||0));
+  &verbose("+".($COUNT{supLSU}||0).") | BOTH:".($COUNT{ALL}||0)."(".($COUNT{annALL}||0)."+".($COUNT{cldALL}||0)."+".($COUNT{supALL}||0).")\n");
+  &verbose("  *Each unit: <total number> (<from rank> + <from clade> + <from linkage clade>\n");
   return();
 }
 
