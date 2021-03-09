@@ -8,7 +8,7 @@ This is a data processing pipeline to achieve bacterial/fungal long amplicons fr
 - python >= 3.6
 - perl >= 5
 - [fastp](https://github.com/Scelta/fastp/tree/stlfr) - A modified version which implemented a module to split the stlfr barcodes.
-- [Mash](https://github.com/marbl/Mash) ([dev repo](https://biogit.cn/PUB/Mash) ) - dev version mandatory since I've modified it to fit stLFR data 
+- [Mash](https://github.com/ohmeta/Mash) - A modified version to fit stLFR data 
 - [Snakemake](https://bitbucket.org/snakemake/snakemake) - a pythonic workflow system.  
 - [blast](https://blast.ncbi.nlm.nih.gov) - The classic alignment tool finding regions of similarity between biological sequences.
 - **Assemble methods**  
