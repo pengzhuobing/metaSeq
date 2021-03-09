@@ -1,10 +1,10 @@
 #!/usr/bin/env perl
-# (c) 2016 - 2019 CHAO
+# (c) 2016 - 2021 CHAO
 # ===================================================================
 my $Description  =  "Metagenome Beads Barcode Quantifictaion launcher";
 # Author:            Chao | fangchao@genomics.cn
 my $version      =  0.1;
-# Last modified:    13 Jan 2019 (since 13 Jan 2019)
+# Last modified:    09 Mar 2021 (since 13 Jan 2019)
 # ===================================================================
 # see detail below
 use warnings;
