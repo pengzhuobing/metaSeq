@@ -30,6 +30,12 @@ default options:
     -p        prefix. When specificed, output seq into a single file with this prefix.
     -o        output dir
     -v        verbose mode
+    -i        sample dir
+    -m        Assembly mode [megait | spades | idba]
+    --sumo    summary output
+    --mem     RCA mem
+    --mAsm    Assembly mem
+    --cpu     RCA cpu
 extract specific barcodes:
     --r2      read2 fq file
     -b        barcode id
@@ -39,7 +45,7 @@ USAGE
 };
 
 &usage && exit unless @ARGV;
-my ($in1,$in2,$list,$cut,$sfx,$bcode,$idvd,$proc,$skip,$exchange,$index,$pfx,$fmt,$out,$verbose);
+my ($in1,$in2,$list,$cut,$sfx,$bcode,$idvd,$proc,$skip,$exchange,$index,$pfx,$fmt,$out,$verbose,$sdir,$mode,$sumo,$mem,$mAsm,$cpu);
 GetOptions(
     "r1:s"        => \$in1,
     "r2:s"        => \$in2,
@@ -56,10 +62,19 @@ GetOptions(
     "F|format:s"  => \$fmt,
     "o|outdir:s"  => \$out,
     "v|verbose"   => \$verbose,
+    "i|sampleDir:s" => \$sdir,
+    "m|mode:s"      => \$mode,
+    "sumo:s"        => \$sumo,
+    "mem:s"       => \$mem,
+    "mAsm:s"      => \$mAsm,
+    "cpu:s"       => \$cpu,
 );
 $fmt ||= "fq";
 $proc||= 1;
 $cut ||= 0;
+$mem ||= 10000000000;
+$mAsm||= 500;
+$cpu ||= 1;
 
 my (%FILES,%LIST,%REST,%STAT,%IDX,$idxEnable);
 my $FHcount=0;
@@ -70,7 +85,12 @@ my @timeS;
 if($index){
   &makeindex('make');
 }elsif($bcode||$idvd){
-  &specifcBarcode($in1,$in2,$bcode,$fmt,$out);
+  if($idvd){
+    system("python task_generate.py $in1 $in2 $sdir $idvd $proc $fmt $mode $mem $mAsm $cpu")
+    #&specifcBarcode($in1,$in2,$bcode,$fmt,$out);
+  }else{
+    &specifcBarcode($in1,$in2,$bcode,$fmt,$out);
+  }
 }else{
   unless($list){
     if( -e "$in1.idx"){
